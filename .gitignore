@@ -1,0 +1,4 @@
+tfds_cassava/
+__pycache__/
+.ipynb_checkpoints/
+*.zip

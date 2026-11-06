@@ -1,0 +1,6 @@
+{
+  "selected_model": "efficientnet_frozen",
+  "test_accuracy": 0.7209549071618037,
+  "test_macro_f1": 0.6360466250948871,
+  "test_balanced_accuracy": 0.6652728715596126
+}
