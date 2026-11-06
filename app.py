@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import gradio as gr
 from PIL import Image
 
-ART = Path(__file__).parent "app_artifacts"
+ART = Path(__file__).parent / "app_artifacts"
 IMG_SIZE = (224, 224)
 CLASS_NAMES = json.loads((ART / "class_names.json").read_text(encoding="utf-8"))
 NUM_CLASSES = len(CLASS_NAMES)
