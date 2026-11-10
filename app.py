@@ -59,6 +59,10 @@ def overlay_gradcam(image_224, heatmap, alpha=0.40):
     return ((1 - alpha) * original.astype(float) + alpha * colors.astype(float)).astype("uint8")
 
 
+BATAS_TOLAK = 0.35   # di bawah ini: ditolak (dianggap bukan daun singkong)
+BATAS_YAKIN = 0.60   # di bawah ini: hasil tampil dengan peringatan
+
+
 def classify_leaf(pil_image):
     if pil_image is None:
         return {}, None, "Unggah foto daun terlebih dahulu."
@@ -67,18 +71,24 @@ def classify_leaf(pil_image):
     probs = model.predict(arr[None, ...], verbose=0)[0]
     top = float(probs.max())
 
-    # Pagar: skor terlalu rendah berarti foto ditolak
-    if top < BATAS_SKOR:
+    # Skor sangat rendah: ditolak
+    if top < BATAS_TOLAK:
         message = (f"Bukan termasuk kategori daun singkong! "
-                   f"(skor tertinggi {top:.1%}, di bawah batas {BATAS_SKOR:.0%}). "
+                   f"(skor tertinggi {top:.1%}, di bawah batas {BATAS_TOLAK:.0%}). "
                    "Jika ini memang daun singkong, coba unggah foto yang lebih jelas.")
         return {}, None, message
 
     heat, predicted = get_gradcam_heatmap(model, arr[None, ...])
     overlay = overlay_gradcam(arr, heat)
-    message = (f"Prediksi: {CLASS_NAMES[predicted]}; skor softmax: {top:.1%}. "
-               "Ini bukan diagnosis definitif.")
     scores = {CLASS_NAMES[i]: float(probs[i]) for i in range(NUM_CLASSES)}
+
+    if top < BATAS_YAKIN:
+        message = (f"Model kurang yakin. Prediksi sementara: {CLASS_NAMES[predicted]} "
+                   f"(skor {top:.1%}). Foto mungkin kurang jelas atau bukan daun "
+                   "singkong. Ini bukan diagnosis definitif.")
+    else:
+        message = (f"Prediksi: {CLASS_NAMES[predicted]}; skor softmax: {top:.1%}. "
+                   "Ini bukan diagnosis definitif.")
     return scores, Image.fromarray(overlay), message
 
 
