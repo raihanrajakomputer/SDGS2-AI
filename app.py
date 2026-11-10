@@ -12,6 +12,11 @@ from PIL import Image
 
 ART = Path(__file__).parent / "app_artifacts"
 IMG_SIZE = (224, 224)
+
+# Batas skor: di bawah angka ini, foto dianggap bukan daun singkong.
+# Ubah angkanya setelah diuji dengan foto nyata.
+BATAS_SKOR = 0.60
+
 CLASS_NAMES = json.loads((ART / "class_names.json").read_text(encoding="utf-8"))
 NUM_CLASSES = len(CLASS_NAMES)
 model = keras.models.load_model(ART / "best_model.keras")
@@ -60,12 +65,19 @@ def classify_leaf(pil_image):
     arr = np.asarray(pil_image.convert("RGB"), dtype=np.float32)
     arr = tf.image.resize_with_pad(arr, *IMG_SIZE).numpy()
     probs = model.predict(arr[None, ...], verbose=0)[0]
+    top = float(probs.max())
+
+    # Pagar: skor terlalu rendah berarti foto ditolak
+    if top < BATAS_SKOR:
+        message = (f"Bukan termasuk kategori daun singkong! "
+                   f"(skor tertinggi {top:.1%}, di bawah batas {BATAS_SKOR:.0%}). "
+                   "Jika ini memang daun singkong, coba unggah foto yang lebih jelas.")
+        return {}, None, message
+
     heat, predicted = get_gradcam_heatmap(model, arr[None, ...])
     overlay = overlay_gradcam(arr, heat)
-    top = float(probs.max())
-    warning = " Keyakinan rendah, perlu pemeriksaan ulang." if top < 0.55 else ""
-    message = (f"Prediksi: {CLASS_NAMES[predicted]}; skor softmax: {top:.1%}."
-               + warning + " Ini bukan diagnosis definitif.")
+    message = (f"Prediksi: {CLASS_NAMES[predicted]}; skor softmax: {top:.1%}. "
+               "Ini bukan diagnosis definitif.")
     scores = {CLASS_NAMES[i]: float(probs[i]) for i in range(NUM_CLASSES)}
     return scores, Image.fromarray(overlay), message
 
@@ -74,7 +86,7 @@ with gr.Blocks(title="SDG 2 - Klasifikasi Daun Singkong") as demo:
     gr.Markdown("# Klasifikasi Gangguan Kesehatan Daun Singkong")
     gr.Markdown("Proyek AI SDG 2. Hasil model bukan diagnosis pertanian definitif.")
     with gr.Row():
-        image_in = gr.Image(type="pil", label="Foto daun", sources=["upload", "webcam"])
+        image_in = gr.Image(type="pil", label="Foto daun", sources=["upload"])
         heat_out = gr.Image(type="pil", label="Grad-CAM")
     prob_out = gr.Label(label="Probabilitas kelas", num_top_classes=5)
     note_out = gr.Textbox(label="Interpretasi", interactive=False)
