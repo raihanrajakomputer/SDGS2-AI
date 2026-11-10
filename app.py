@@ -86,7 +86,7 @@ with gr.Blocks(title="SDG 2 - Klasifikasi Daun Singkong") as demo:
     gr.Markdown("# Klasifikasi Gangguan Kesehatan Daun Singkong")
     gr.Markdown("Proyek AI SDG 2. Hasil model bukan diagnosis pertanian definitif.")
     with gr.Row():
-        image_in = gr.Image(type="pil", label="Foto daun", sources=["upload"])
+        image_in = gr.Image(type="pil", label="Foto daun", sources=["upload", "webcam"])
         heat_out = gr.Image(type="pil", label="Grad-CAM")
     prob_out = gr.Label(label="Probabilitas kelas", num_top_classes=5)
     note_out = gr.Textbox(label="Interpretasi", interactive=False)
