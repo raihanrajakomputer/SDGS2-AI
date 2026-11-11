@@ -29,4 +29,4 @@ Model dipilih memakai validation macro-F1. Detail per kelas ada di
 ## Anggota
 - Raihan Al Rajab
 - Fatimah Alya Sabhira
-- Anggun Dian Mutiara Sari
+- Anggun Dian Mutiara
