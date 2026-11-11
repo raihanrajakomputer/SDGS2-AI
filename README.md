@@ -1,4 +1,4 @@
-# Klasifikasi Gangguan Kesehatan Daun Singkong (SDG 2)
+# Klasifikasi Gangguan Kesehatan Daun Singkong Menggunakan CNN dan EfficientNetB0 dengan Visualisasi Grad-CAM untuk Mendukung SDG 2
 
 Tugas Besar Kecerdasan Buatan. Model mengenali 5 kelas daun singkong
 (CBB, CBSD, CGM, CMD, Healthy) dari foto, memakai CNN dan EfficientNetB0.
