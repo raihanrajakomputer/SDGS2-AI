@@ -1,21 +1,12 @@
 {
-  "dataset": "tfds/cassava (iCassava 2019)",
-  "best_model": "efficientnet_frozen",
-  "image_size": [
-    224,
-    224
+  "img_size": [
+    128,
+    128
   ],
-  "pixel_range": "[0, 255]",
-  "source_splits": [
-    "train",
-    "validation",
-    "test"
+  "kelas": [
+    "healthy",
+    "cmd",
+    "cbsd"
   ],
-  "seed": 42,
-  "scores": {
-    "selected_model": "efficientnet_frozen",
-    "test_accuracy": 0.7209549071618037,
-    "test_macro_f1": 0.6360466250948871,
-    "test_balanced_accuracy": 0.6652728715596126
-  }
+  "arsitektur": "CNN buatan sendiri (3 blok Conv2D + MaxPooling), dilatih dari nol"
 }
