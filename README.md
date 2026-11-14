@@ -6,9 +6,9 @@ Tugas Besar Kecerdasan Buatan, S1 Ilmu Komputer, FMIPA, Universitas Halu Oleo. K
 
 | Nama | NIM |
 |---|---|
-| RAIHAN AL RAJAB | ISI NIM |
-| FATIMAH ALYA SABHIRAH | ISI NIM |
-| ANGGUN DIAN MUTIARA | ISI NIM |
+| RAIHAN AL RAJAB | F1G125074 |
+| FATIMAH ALYA SABHIRAH | F1G1250 |
+| ANGGUN DIAN MUTIARA | F1G1250 |
 
 ## Ringkasan
 
